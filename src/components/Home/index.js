@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   Container,
   Grow,
@@ -14,7 +14,7 @@ import ChipInput from "material-ui-chip-input";
 
 import Posts from "../posts/Posts";
 import Form from "../form/Form";
-import { getPosts, getPostsBySearch } from "../../actions/posts";
+import {  getPostsBySearch } from "../../actions/posts";
 import Pagination from "../Pagination";
 
 import useStyles from "./styles";
@@ -53,10 +53,6 @@ const Home = () => {
       history.push("/");
     }
   };
-
-  useEffect(() => {
-    dispatch(getPosts());
-  }, [currentId, dispatch]);
 
   return (
     <Grow in>
@@ -107,7 +103,7 @@ const Home = () => {
             </AppBar>
             <Form currentId={currentId} setCurrentId={setCurrentId} />
             <Paper elevation={6}>
-              <Pagination />
+              <Pagination page={page} />
             </Paper>
           </Grid>
         </Grid>

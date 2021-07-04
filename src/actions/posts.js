@@ -9,9 +9,10 @@ import {
 } from "../constants/actionTypes";
 
 // action creators return an action
-export const getPosts = () => async (dispatch) => {
+export const getPosts = (page) => async (dispatch) => {
   try {
-    const { data } = await api.fetchPosts();
+    const { data } = await api.fetchPosts(page);
+    console.log(data)
     //actions simply return an object containing a type and payload
     const action = {
       type: FETCH_ALL,
