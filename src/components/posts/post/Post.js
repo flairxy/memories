@@ -7,6 +7,7 @@ import {
   CardMedia,
   Button,
   Typography,
+  ButtonBase,
 } from "@material-ui/core";
 import ThumbUpAltIcon from "@material-ui/icons/ThumbUpAlt";
 import ThumbUpAltOutlined from "@material-ui/icons/ThumbUpOutlined";
@@ -15,11 +16,15 @@ import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
 import moment from "moment";
 import { useDispatch } from "react-redux";
 import { deletePost, likePost } from "../../../actions/posts";
+import { useHistory } from "react-router-dom";
 
 const Post = ({ post, setCurrentId }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const history = useHistory();
   const user = JSON.parse(localStorage.getItem("profile"));
+
+  const openPost = () => history.push(`/posts/${post._id}`);
 
   const Likes = () => {
     if (post.likes.length > 0) {
@@ -51,50 +56,55 @@ const Post = ({ post, setCurrentId }) => {
 
   return (
     <Card className={classes.card} raised elevation={6}>
-      <CardMedia
-        component="div"
-        image={post.selectedFile}
-        className={classes.media}
-        title={post.title}
-      />
-      <div className={classes.overlay}>
-        <Typography variant="h6"> {post.name} </Typography>
-        <Typography variant="body2">
-          {" "}
-          {moment(post.createdAt).fromNow()}{" "}
-        </Typography>
-      </div>
-      <div className={classes.overlay2}>
-        {(user?.result?.googleId === post?.creator ||
-          user?.result?._id === post.creator) && (
-          <Button
-            style={{ color: "white" }}
-            size="small"
-            onClick={() => setCurrentId(post._id)}
+      <ButtonBase className={classes.cardAction} onClick={openPost}>
+        <CardMedia
+          component="div"
+          image={post.selectedFile}
+          className={classes.media}
+          title={post.title}
+        />
+        <div className={classes.overlay}>
+          <Typography variant="h6"> {post.name} </Typography>
+          <Typography variant="body2">
+            {" "}
+            {moment(post.createdAt).fromNow()}{" "}
+          </Typography>
+        </div>
+        <div className={classes.overlay2}>
+          {(user?.result?.googleId === post?.creator ||
+            user?.result?._id === post.creator) && (
+            <div
+              style={{ color: "white" }}
+              size="small"
+              onClick={(e) => {
+                e.stopPropagation();
+                setCurrentId(post._id);
+              }}
+            >
+              <MoreHorizIcon fontSize="default" />
+            </div>
+          )}
+        </div>
+        <div className={classes.details}>
+          <Typography variant="body2" color="textSecondary">
+            {" "}
+            {post.tags.map((tag) => `#${tag} `)}{" "}
+          </Typography>
+        </div>
+        <CardContent>
+          <Typography className={classes.title} variant="h6" gutterBottom>
+            {post.title}
+          </Typography>
+          <Typography
+            className={classes.message}
+            variant="body2"
+            component="p"
+            color="textSecondary"
           >
-            <MoreHorizIcon fontSize="default" />
-          </Button>
-        )}
-      </div>
-      <div className={classes.details}>
-        <Typography variant="body2" color="textSecondary">
-          {" "}
-          {post.tags.map((tag) => `#${tag} `)}{" "}
-        </Typography>
-      </div>
-      <CardContent>
-        <Typography className={classes.title} variant="h6" gutterBottom>
-          {post.title}
-        </Typography>
-        <Typography
-          className={classes.message}
-          variant="body2"
-          component="p"
-          color="textSecondary"
-        >
-          {post.message}
-        </Typography>
-      </CardContent>
+            {post.message}
+          </Typography>
+        </CardContent>
+      </ButtonBase>
       <CardActions className={classes.cardActions}>
         <Button
           size="small"

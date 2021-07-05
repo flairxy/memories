@@ -14,7 +14,7 @@ import ChipInput from "material-ui-chip-input";
 
 import Posts from "../posts/Posts";
 import Form from "../form/Form";
-import {  getPostsBySearch } from "../../actions/posts";
+import { getPostsBySearch } from "../../actions/posts";
 import Pagination from "../Pagination";
 
 import useStyles from "./styles";
@@ -28,7 +28,7 @@ const Home = () => {
   const query = useQuery();
   const history = useHistory();
   const page = query.get("page") || 1;
-  const searchQuery = query.get("searchQuery");
+  // const searchQuery = query.get("searchQuery");
 
   const dispatch = useDispatch();
   const [currentId, setCurrentId] = useState(null);
@@ -102,9 +102,11 @@ const Home = () => {
               </Button>
             </AppBar>
             <Form currentId={currentId} setCurrentId={setCurrentId} />
-            <Paper elevation={6}>
-              <Pagination page={page} />
-            </Paper>
+            {!search && !tags.length && (
+              <Paper elevation={6} className={classes.pagination}>
+                <Pagination page={page} />
+              </Paper>
+            )}
           </Grid>
         </Grid>
       </Container>
