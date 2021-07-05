@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API = axios.create({ baseURL: "http://localhost:5000" });
+const API = axios.create({ baseURL: "https://flair-memories.herokuapp.com/" });
 
 API.interceptors.request.use((request) => {
   const data = localStorage.getItem("profile");
